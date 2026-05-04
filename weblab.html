@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Task Manager</title>
+  <link rel="stylesheet" href="titlepage.css" />
+</head>
+<body> 
+  <header class="page-header">
+    <div>
+      <h1>Student Task Manager</h1>
+      <p class="subheading">A simple task planner for assignments, subjects, and due dates.</p>
+    </div>
+    <div class="signature-lines">
+      <span>Head of Department: ___________</span>
+      <span>Instructor: ___________</span>
+    </div>
+  </header>
+
+  <main class="layout-grid">
+    <section class="card form-card">
+      <h2>Add a New Task</h2>
+      <form id="taskForm">
+        <label for="taskName">Task Name</label>
+        <input type="text" id="taskName" name="taskName" placeholder="Enter assignment name" required />
+
+        <label for="subject">Subject</label>
+        <select id="subject" name="subject" required>
+          <option value="">Select subject</option>
+          <option value="Math">Math</option>
+          <option value="Science">Science</option>
+          <option value="English">English</option>
+          <option value="Computer">Computer</option>
+          <option value="History">History</option>
+        </select>
+
+        <label for="dueDate">Due Date</label>
+        <input type="date" id="dueDate" name="dueDate" required />
+
+        <button type="submit" class="primary-btn">Submit Task</button>
+      </form>
+
+      <div class="controls">
+        <div class="control-group">
+          <label for="filterSubject">Filter by Subject</label>
+          <select id="filterSubject">
+            <option value="All">All Subjects</option>
+            <option value="Math">Math</option>
+            <option value="Science">Science</option>
+            <option value="English">English</option>
+            <option value="Computer">Computer</option>
+            <option value="History">History</option>
+          </select>
+        </div>
+        <button id="sortDueDate" class="secondary-btn">Sort by Due Date</button>
+      </div>
+    </section>
+
+    <section class="card task-card">
+      <h2>Task List</h2>
+      <div class="table-wrapper">
+        <table id="taskTable">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Subject</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3" class="empty-row">No tasks yet. Add a task to get started.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card api-card">
+      <h2>Fetched API Tasks</h2>
+      <p class="api-description">Data fetched from a local fake API file and displayed here.</p>
+      <div class="table-wrapper">
+        <table id="apiTable">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Subject</th>
+              <th>Due Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3" class="empty-row">Loading API tasks...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const taskForm = document.getElementById('taskForm');
+    const taskTableBody = document.querySelector('#taskTable tbody');
+    const apiTableBody = document.querySelector('#apiTable tbody');
+    const filterSubject = document.getElementById('filterSubject');
+    const sortDueDateBtn = document.getElementById('sortDueDate');
+
+    let tasks = [];
+    let isSortedAsc = true;
+
+    const createRow = ({ taskName, subject, dueDate }) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${taskName}</td>
+        <td>${subject}</td>
+        <td>${dueDate}</td>
+      `;
+      return row;
+    };
+
+    const updateTable = (items, bodyElement, emptyText) => {
+      bodyElement.innerHTML = '';
+      if (!items.length) {
+        const emptyRow = document.createElement('tr');
+        emptyRow.innerHTML = `<td colspan="3" class="empty-row">${emptyText}</td>`;
+        bodyElement.appendChild(emptyRow);
+        return;
+      }
+      items.forEach(item => bodyElement.appendChild(createRow(item)));
+    };
+
+    const displayTasks = () => {
+      const selected = filterSubject.value;
+      const filtered = selected === 'All' ? tasks : tasks.filter(({ subject }) => subject === selected);
+      updateTable(filtered, taskTableBody, 'No tasks match this filter.');
+    };
+
+    const handleFormSubmit = event => {
+      event.preventDefault();
+      const formData = new FormData(taskForm);
+      const newTask = {
+        taskName: formData.get('taskName').trim(),
+        subject: formData.get('subject'),
+        dueDate: formData.get('dueDate'),
+      };
+
+      if (!newTask.taskName || !newTask.subject || !newTask.dueDate) {
+        alert('Please complete all fields before submitting.');
+        return;
+      }
+
+      tasks.push(newTask);
+      taskForm.reset();
+      filterSubject.value = 'All';
+      displayTasks();
+    };
+
+    const sortTasksByDate = () => {
+      tasks.sort((a, b) => {
+        const dateA = new Date(a.dueDate);
+        const dateB = new Date(b.dueDate);
+        return isSortedAsc ? dateA - dateB : dateB - dateA;
+      });
+      isSortedAsc = !isSortedAsc;
+      sortDueDateBtn.textContent = isSortedAsc ? 'Sort by Due Date' : 'Reverse Sort';
+      displayTasks();
+    };
+
+    const loadApiTasks = async () => {
+      try {
+        const response = await fetch('fake-api.json');
+        if (!response.ok) throw new Error('API request failed');
+        const apiData = await response.json();
+        updateTable(apiData, apiTableBody, 'No API tasks found.');
+      } catch (error) {
+        updateTable([], apiTableBody, 'Unable to load API tasks.');
+        console.error(error);
+      }
+    };
+
+    taskForm.addEventListener('submit', handleFormSubmit);
+    filterSubject.addEventListener('change', displayTasks);
+    sortDueDateBtn.addEventListener('click', sortTasksByDate);
+    loadApiTasks();
+  </script>
+</body>
+</html>

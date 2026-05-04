@@ -1,0 +1,190 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef2f6;
+  color: #222;
+  line-height: 1.5;
+}
+
+.page-header {
+  padding: 24px 20px;
+  background: #2f5371;
+  color: #f6f9fc;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+}
+
+.subheading {
+  margin: 0;
+  color: #d3e0ff;
+}
+
+.signature-lines {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+
+.signature-lines span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.layout-grid {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #d4dae5;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 10px 28px rgba(31, 58, 110, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #273849;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #3a4a5c;
+}
+
+input[type='text'], input[type='date'], select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border: 1px solid #c7d1e0;
+  border-radius: 12px;
+  background: #fbfcff;
+  font-size: 1rem;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: #2f5371;
+  color: #fff;
+  width: 100%;
+}
+
+.secondary-btn {
+  background: #f3f5fb;
+  color: #2f5371;
+  border: 1px solid #c7d1e0;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+  opacity: 0.95;
+}
+
+.controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f4f7fb;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 1px solid #e3e9f2;
+}
+
+th {
+  color: #41516c;
+  font-weight: 700;
+}
+
+.empty-row td {
+  text-align: center;
+  color: #637489;
+  padding: 28px 12px;
+}
+
+.api-description {
+  margin-top: 0;
+  color: #596a7f;
+}
+
+@media (max-width: 900px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .signature-lines {
+    flex-direction: column;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  input[type='text'], input[type='date'], select {
+    font-size: 0.95rem;
+  }
+}

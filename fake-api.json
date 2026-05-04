@@ -1,0 +1,27 @@
+[
+  {
+    "taskName": "Research report",
+    "subject": "English",
+    "dueDate": "2026-05-08"
+  },
+  {
+    "taskName": "Algebra worksheet",
+    "subject": "Math",
+    "dueDate": "2026-05-05"
+  },
+  {
+    "taskName": "Lab conclusion",
+    "subject": "Science",
+    "dueDate": "2026-05-10"
+  },
+  {
+    "taskName": "History presentation",
+    "subject": "History",
+    "dueDate": "2026-05-07"
+  },
+  {
+    "taskName": "Coding challenge",
+    "subject": "Computer",
+    "dueDate": "2026-05-09"
+  }
+]
